@@ -22,4 +22,14 @@ class Board
       puts
     end 
   end
+
+  def [](pos)
+    row, col = pos
+    rows[row][col]
+  end
+
+  def []=(pos, piece)
+    row, col = pos
+    rows[row][col] = piece + ' '
+  end
 end
