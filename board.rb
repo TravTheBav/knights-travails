@@ -1,6 +1,6 @@
 # a class representing an 8x8 chess board
 require 'colorize'
-require 'knight'
+require_relative 'knight'
 
 class Board
   attr_reader :rows, :visited_positions
@@ -44,5 +44,17 @@ class Board
     else
       true
     end
+  end
+
+  # takes in a position and returns all possible moves that are in bounds
+  def valid_moves(pos)
+    moves = []
+    Knight.moves.each do |move|
+      row = pos[0] + move[0]
+      col = pos[1] + move[1]
+      new_pos = [row, col]
+      moves << new_pos if in_bounds?(new_pos)
+    end
+    moves
   end
 end
