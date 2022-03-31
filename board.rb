@@ -1,11 +1,13 @@
 # a class representing an 8x8 chess board
 require 'colorize'
+require 'knight'
 
 class Board
-  attr_reader :rows
+  attr_reader :rows, :visited_positions
 
   def initialize
     @rows = Array.new(8) { Array.new(8, '  ') }
+    @visited_positions = []
   end
 
   def pretty_print
@@ -13,14 +15,14 @@ class Board
       row.each_with_index do |space, col_idx|
         case row_idx.even?
         when true
-          col_idx.even? ? color = :white : color = :black
+          color = col_idx.even? ? :white : :black
         else
-          col_idx.even? ? color = :black : color = :white
+          color = col_idx.even? ? :black : :white
         end
-        print space.colorize(:background => color)
+        print space.colorize(:color => :red, background: color)
       end
       puts
-    end 
+    end
   end
 
   def [](pos)
@@ -30,6 +32,17 @@ class Board
 
   def []=(pos, piece)
     row, col = pos
-    rows[row][col] = piece + ' '
+    rows[row][col] = "#{piece} "
+  end
+
+  def in_bounds?(pos)
+    row, col = pos
+    if row > 7 || col > 7
+      false
+    elsif row.negative? || col.negative?
+      false
+    else
+      true
+    end
   end
 end
