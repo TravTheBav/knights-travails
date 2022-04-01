@@ -1,3 +1,6 @@
+# a class representing a Knight
+# contains offsets for all eight directions a knight can move
+
 class Knight
   def self.moves
     [

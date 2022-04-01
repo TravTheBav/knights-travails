@@ -2,17 +2,22 @@
 require 'colorize'
 require_relative 'knight'
 require_relative 'node'
-require 'pry-byebug'
 
 class Board
-  attr_reader :rows, :visited_positions
+  attr_accessor :highlighted
+  attr_reader :rows
 
   def initialize
     @rows = Array.new(8) { Array.new(8, '  ') }
+    @highlighted = nil
   end
 
   def pretty_print
+    print '  '
+    8.times { |i| print "#{i} " }
+    puts
     rows.each_with_index do |row, row_idx|
+      print "#{row_idx} "
       row.each_with_index do |space, col_idx|
         case row_idx.even?
         when true
@@ -20,7 +25,9 @@ class Board
         else
           color = col_idx.even? ? :black : :white
         end
-        print space.colorize(:color => :red, background: color)
+        color = :green if highlighted == [row_idx, col_idx]
+
+        print space.colorize(background: color)
       end
       puts
     end
@@ -78,6 +85,7 @@ class Board
     current_node
   end
 
+  # returns array of all positions a knight moves from start to finish
   def knight_moves(start_pos, end_pos)
     node = build_tree(start_pos, end_pos)
     knight_path = []
