@@ -59,7 +59,8 @@ class Board
     moves
   end
 
-  def knight_moves(start_pos, end_pos)
+  # uses BFS to build a tree of nodes from start to end and returns the ending node
+  def build_tree(start_pos, end_pos)
     traveled_positions = []
     queue = [Node.new(start_pos)]
     current_node = queue.shift
@@ -74,12 +75,16 @@ class Board
       end
       current_node = queue.shift
     end
+    current_node
+  end
 
+  def knight_moves(start_pos, end_pos)
+    node = build_tree(start_pos, end_pos)
     knight_path = []
 
-    until current_node.pos == start_pos
-      knight_path << current_node.pos
-      current_node = current_node.parent
+    until node.pos == start_pos
+      knight_path << node.pos
+      node = node.parent
     end
     knight_path << start_pos
     knight_path.reverse
