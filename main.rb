@@ -1,7 +1,7 @@
 require_relative 'board'
 
 b = Board.new
-moves = b.knight_moves([3,3],[4,3])
+moves = b.knight_moves([3,3],[7,7])
 
 moves.each do |pos|
   system('clear')
@@ -11,5 +11,5 @@ moves.each do |pos|
 end
 
 puts
-puts "You made it in 3 moves!  Here's your path:"
+puts "You made it in #{moves.length} moves!  Here's your path:"
 moves.each { |move| p move }
