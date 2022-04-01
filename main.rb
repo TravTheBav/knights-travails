@@ -1,11 +1,8 @@
 require_relative 'board'
+require_relative 'node'
 
 b = Board.new
-b.pretty_print
 
-pos = [0, 0]
-b[pos] = 'K'
-
-2.times {puts}
-
-b.pretty_print
+p b.knight_moves([0,0],[1,2])
+p b.knight_moves([0,0],[3,3])
+p b.knight_moves([3,3],[0,0])

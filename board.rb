@@ -1,13 +1,14 @@
 # a class representing an 8x8 chess board
 require 'colorize'
 require_relative 'knight'
+require_relative 'node'
+require 'pry-byebug'
 
 class Board
   attr_reader :rows, :visited_positions
 
   def initialize
     @rows = Array.new(8) { Array.new(8, '  ') }
-    @visited_positions = []
   end
 
   def pretty_print
@@ -56,5 +57,31 @@ class Board
       moves << new_pos if in_bounds?(new_pos)
     end
     moves
+  end
+
+  def knight_moves(start_pos, end_pos)
+    traveled_positions = []
+    queue = [Node.new(start_pos)]
+    current_node = queue.shift
+
+    until current_node.pos == end_pos
+      traveled_positions << current_node.pos
+      moves = valid_moves(current_node.pos).reject { |pos| traveled_positions.include?(pos) }
+      moves.each do |pos|
+        child_node = Node.new(pos, current_node)
+        current_node.children << child_node
+        queue << child_node
+      end
+      current_node = queue.shift
+    end
+
+    knight_path = []
+
+    until current_node.pos == start_pos
+      knight_path << current_node.pos
+      current_node = current_node.parent
+    end
+    knight_path << start_pos
+    knight_path.reverse
   end
 end
